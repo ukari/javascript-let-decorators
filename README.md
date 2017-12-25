@@ -96,3 +96,24 @@ let var1 [= value1] [, var2 [= value2]] [, ..., varN [= valueN]];
 [varN = decorator1(varN);]]
 ```
 
+### Run examples
+I provides some babel plugins and a fork babylon to help preview and experience this syntax, the config could be find in package.json and .babelrc. 
+
+#### install dependencies
+```
+npm install
+```
+
+#### compile by babel
+```
+npm run example
+```
+
+#### view and run example
+```
+cat examples/xxx-example.js
+cat dist/xxx-example.js
+node dist/xxx-example.js
+```
+
+The babylon I forked is a pre-release version so it couldn't works well with the latest babel version v6.24.0 when some other plugins needed like transform-object-rest-spread, so I don't recommand to use the preview plugins and the forked babylon in production.
