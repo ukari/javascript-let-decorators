@@ -1,0 +1,6 @@
+{
+  "plugins": ["@babel/plugin-proposal-let-decorators"],
+  "parserOpts": {
+      "parser": "babylon"
+  }
+}
