@@ -73,7 +73,9 @@ with the help of connect function, the variable a will be turns into a functiona
 
 ## Syntax
 
-### from
+### normal
+
+#### from
 ```
 [@decorator1]
 [@decorator2]
@@ -82,7 +84,7 @@ let var1 [= value1] [, var2 [= value2]] [, ..., varN [= valueN]];
 
 ```
 
-### to
+#### to
 ```
 let var1 [= value1] [, var2 [= value2]] [, ..., varN [= valueN]];
 [[var1 = decoratorM(var1); ...]
@@ -111,11 +113,11 @@ let a = bar(foo(1));
 
 ```
 
-### why 
+#### why 
 
 transform won't happen in one line due to the advantage of do it line by line in some conditions.
 
-#### the condition: valid in one line, invalid in multi lines
+##### the condition: valid in one line, invalid in multi lines
 
 ``` javascript
 @boo
@@ -142,6 +144,22 @@ function boo(x) {
 ```
 
 now, @foo, @bar is actually not valid for the ObjectPattern, if things happen in only one line, it won't be checked, and it means @foo, @bar needs a implicit dependent on the last excute @boo, so they are actually not a independent decorator which could be add or remove alone.
+
+### corner
+
+#### from
+```
+@f
+let a = b = c = 1;
+```
+
+#### to
+```
+let a = 1;
+a = f(a);
+b = a;
+c = a;
+```
 
 ## Run examples
 I provides some babel plugins and a fork babylon to help preview and experience this syntax, the config could be find in package.json and .babelrc. 
