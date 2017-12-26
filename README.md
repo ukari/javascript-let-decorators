@@ -95,25 +95,74 @@ let var1 [= value1] [, var2 [= value2]] [, ..., varN [= valueN]];
 [varN = decorator2(varN);]
 [varN = decorator1(varN);]]
 ```
+the decorators will works after the first binding stuffs to identifier by let.
 
-### Run examples
+then it will rebind identifier with the nearest decorator again and again to the end.
+
+but, why not simply make this happen in one line like this
+
+``` javascript
+@bar
+@foo
+let a = 1;
+
+// won't transform to the form in one line
+let a = bar(foo(1));
+
+```
+
+### why 
+
+transform won't happen in one line due to the advantage of do it line by line in some conditions.
+
+#### the condition: valid in one line, invalid in multi lines
+
+``` javascript
+@boo
+@bar
+@foo
+let {a, b} = {a: 1, b: 2}
+
+```
+
+image that if you have three function foo, bar, boo. When their defination is
+
+``` javascript
+function foo(x) {
+    return null;
+}
+
+function bar(x) {
+    return null
+}
+
+function boo(x) {
+    return {a: 2, b: 3}
+}
+```
+
+now, @foo, @bar is actually not valid for the ObjectPattern, if things happen in only one line, it won't be checked, and it means @foo, @bar needs a implicit dependent on the last excute @boo, so they are actually not a independent decorator which could be add or remove alone.
+
+## Run examples
 I provides some babel plugins and a fork babylon to help preview and experience this syntax, the config could be find in package.json and .babelrc. 
 
-#### install dependencies
+### install dependencies
 ```
 npm install
 ```
 
-#### compile by babel
+### compile by babel
 ```
 npm run example
 ```
 
-#### view and run example
+### view and run example
 ```
 cat examples/xxx-example.js
 cat dist/xxx-example.js
 node dist/xxx-example.js
 ```
 
-The babylon I forked is a pre-release version so it couldn't works well with the latest babel version v6.24.0 when some other plugins needed like transform-object-rest-spread, so I don't recommand to use the preview plugins and the forked babylon in production.
+The babylon I forked is a pre-release version so it couldn't works well with the latest babel version v6.24.0 when some other plugins needed like transform-object-rest-spread, so I don't recommand to use this preview plugins and the forked babylon in production.
+
+if you want to make things like `"plugins": ["transform-object-rest-spread"]` or `"presets": ["react"]` in .babelrc works with this let decorator, you need use things like "@babel/transform-object-rest-spread" and "@babel/react" instead of those.
