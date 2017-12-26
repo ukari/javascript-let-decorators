@@ -183,4 +183,4 @@ node dist/xxx-example.js
 
 The babylon I forked is a pre-release version so it couldn't works well with the latest babel version v6.24.0 when some other plugins needed like transform-object-rest-spread, so I don't recommand to use this preview plugins and the forked babylon in production.
 
-if you want to make things like `"plugins": ["transform-object-rest-spread"]` or `"presets": ["react"]` in .babelrc works with this let decorator, you need use things like "@babel/transform-object-rest-spread" and "@babel/react" instead of those.
+if you want to make things like `"plugins": ["transform-object-rest-spread"]` or `"presets": ["react"]` in .babelrc works with this let decorator, you need use things like "@babel/plugin-proposal-object-rest-spread" and "@babel/react" instead of those.
