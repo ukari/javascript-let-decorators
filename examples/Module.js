@@ -50,23 +50,23 @@ let Person = function (exports) {
   exports.hp = 100;
 
   @exports
-  let init = ({age, name}) => {
+  let init = function({age, name}) {
     self.age = age;
     self.name = name;
   };
 
   @exports
-  let eat = (food) => {
+  let eat = function(food) {
     console.log(`${self.name} eats a ${food}`);
   };
 
   @exports
-  let introduce = () => {
+  let introduce = function() {
     console.log(`my name is ${self.name}, ${self.age} years old`)
   };
 
   @exports
-  let attacked = (damage) => {
+  let attacked = function(damage) {
     let oldhp = exports.hp;
     console.log(`${self.name} get %c${damage}%c damage`, "color: red", "color:black");
     if ((exports.hp -= damage) > 0) {
