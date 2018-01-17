@@ -3,6 +3,7 @@
     "@babel/core": "7.0.0-beta.36",
     "@babel/cli": "7.0.0-beta.36",
     "babylon": "github:ukari/babylon",
+    "@babel/plugin-proposal-object-rest-spread": "7.0.0-beta.36",
     "@babel/plugin-proposal-let-decorators": "github:ukari/babel-plugin-proposal-let-decorators"
   },
   "scripts": {
