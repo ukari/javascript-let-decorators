@@ -1,4 +1,4 @@
-# Decorators for ES6 let
+# Decorators for let
 
 ## Summary
 Nowadays, we have the proposal which enable decorators on Class and Object, but it don't support on Function due to the probably difficult when implement this feature, especially for the exist of function declaration hoisting.
@@ -6,6 +6,34 @@ Nowadays, we have the proposal which enable decorators on Class and Object, but 
 The let variable declaration doesn't have a declaration hoisting, and it could bind a reference to a identifier. If enable to use decorators on let, it means decorators would works on everything which could be bind to a identifier.
 
 The let decorators not works on the left expression in a let statement, it works on the right identifier in the way of rebind it.
+
+## Why Let
+`let` is the only thing which has actual semantic and implement nearly to the `class`.
+
+Javascript is a language where function hava a first class standing and some people programming in the function way. If we have some good things new for `class`, the same thing for functional way as a replacement should always be include too.
+
+For `let foo = () => {}`, if print the `foo.name` then a "foo" will got. `let foo = () => {}` is the reality that guys programming in functional ways like me must face to because we don't have a non-hoisting function defination syntax. And `let` has been well prepared to play such a role.
+
+If the syntax for [non-hoisting function](https://github.com/wycats/javascript-decorators/issues/4#issuecomment-169285562) like `def` is added into the language, decorators could work to `def` in the same way as `let`.
+
+Works well with commonjs's `require`.
+
+### the same
+for example
+```
+class A {
+
+}
+A = 5;
+```
+
+```
+let A = () => {};
+A = 5;
+```
+
+- they won't be hoist
+- they could be re-assign to another value
 
 ## Examples
 
@@ -70,6 +98,23 @@ function connect(store) {
 
 with the help of connect function, the variable a will be turns into a functional stateful react component.
 
+### works with react router v4
+``` jsx
+@Path("/article/:path*/:title", {
+  exact: true,
+  title: ({match: {params: {title}}}) => title,
+  onload: ({match: {params: {path, title}}}) => fetchArticle({path, title}),
+})
+@Connect(store)
+let Article = () => (
+  <div>
+    <div class={title}>{store.title}</div>
+    <div class={content}>
+      {Loading(Markdown(store.content), store.loading)}
+    </div>
+  </div>
+);
+```
 
 ## Syntax
 
@@ -180,7 +225,3 @@ cat examples/xxx-example.js
 cat dist/xxx-example.js
 node dist/xxx-example.js
 ```
-
-The babylon I forked is a pre-release version so it couldn't works well with the latest babel version v6.24.0 when some other plugins needed like transform-object-rest-spread, so I don't recommand to use this preview plugins and the forked babylon in production.
-
-if you want to make things like `"plugins": ["transform-object-rest-spread"]` or `"presets": ["react"]` in .babelrc works with this let decorator, you need use things like "@babel/plugin-proposal-object-rest-spread" and "@babel/react" instead of those.
