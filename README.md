@@ -142,27 +142,58 @@ let var1 [= value1] [, var2 [= value2]] [, ..., varN [= valueN]];
 [varN = decorator2(varN);]
 [varN = decorator1(varN);]]
 ```
-the decorators will works after the first binding stuffs to identifier by let.
 
-then it will rebind identifier with the nearest decorator again and again to the end.
+## styles
+the syntax transforms the decorator in the `reassign-style` instead of the `wrap-style`.
 
-but, why not simply make this happen in one line like this
-
+for example
 ``` javascript
-@bar
 @foo
 let a = 1;
-
-// won't transform to the form in one line
-let a = bar(foo(1));
-
 ```
 
-#### why 
+### reassign-style
+``` javascript
+let a = 1;
+a = foo(a);
+```
 
-transform won't happen in one line due to the advantage of do it line by line in some conditions.
+### wrap-style
+``` javascript
+let a = foo(1);
+```
 
-##### the condition: valid in one line, invalid in multi lines
+#### the reason choosing reassign-style
+transform won't happen in `wrap-style` due to the advantage of do it `reassign-style` in some conditions.
+
+##### the condition: get function name
+for example
+```
+let foo = fn => (console.log(fn.name), fn);
+
+@foo
+let fun = () => {};
+```
+
+- in `reassign-style`, the function `fun`'s name could be accessible.
+
+``` javascript
+let fun = ()  => {}
+fun = foo(fun)
+```
+
+
+
+- in `wrap-style`, the function `fun`'s name couldn't be logged.
+
+``` javascript
+let fun = foo(()  => {})
+```
+
+here is a [example](https://github.com/ukari/javascript-let-decorators/blob/master/examples/Module.js) which needs the feature to get let function's name.
+
+
+##### the condition: a Non-Independent decorator could be valid in wrap-style while invalid in reassign-style
 
 ``` javascript
 @boo
@@ -172,7 +203,7 @@ let {a, b} = {a: 1, b: 2}
 
 ```
 
-image that if you have three function foo, bar, boo. When their defination is
+image that if there are three function foo, bar, boo. When their defination is
 
 ``` javascript
 function foo(x) {
@@ -188,7 +219,7 @@ function boo(x) {
 }
 ```
 
-now, @foo, @bar is actually not valid for the ObjectPattern, if things happen in only one line, it won't be checked, and it means @foo, @bar needs a implicit dependent on the last excute @boo, so they are actually not a independent decorator which could be add or remove alone.
+now, @foo, @bar is actually not valid for the ObjectPattern, if things happen in `wrap-style`, it won't be checked, and it means @foo, @bar needs a implicit dependent on the last excute @boo, so they are actually not a independent decorator which could be add or remove alone.
 
 ### corner
 
