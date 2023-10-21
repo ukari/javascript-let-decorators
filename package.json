@@ -1,6 +1,6 @@
 {
   "devDependencies": {
-    "@babel/core": "7.0.0-beta.36",
+    "@babel/core": "7.23.2",
     "@babel/cli": "7.0.0-beta.36",
     "babylon": "github:ukari/babylon",
     "@babel/plugin-proposal-object-rest-spread": "7.0.0-beta.36",
